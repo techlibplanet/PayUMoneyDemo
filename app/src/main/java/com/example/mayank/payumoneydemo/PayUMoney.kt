@@ -48,14 +48,14 @@ internal class PayUMoney(private val activity: Activity) {
                 .setProductName(productName)
                 .setFirstName(firstName)
                 .setEmail(email)
-                .setsUrl(Constants.surl)
-                .setfUrl(Constants.furl)
+                .setsUrl(Constants.surl)        // Success Url
+                .setfUrl(Constants.furl)        // Failed Url
                 .setUdf1(udf1)
                 .setUdf2(udf2)
                 .setUdf3(udf3)
                 .setUdf4(udf4)
                 .setUdf5(udf5)
-                .setIsDebug(false)
+                .setIsDebug(false)              // Integration environment - true (Debug)/ false(Production)
                 .setKey(Constants.MERCHANT_KEY)
                 .setMerchantId(Constants.MERCHANT_ID)
 
