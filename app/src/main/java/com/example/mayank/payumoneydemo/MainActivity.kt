@@ -13,6 +13,7 @@ import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager
 import org.json.JSONException
 import org.json.JSONObject
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.AsyncTask
 import android.widget.EditText
 import com.example.mayank.payumoneydemo.Constants.MERCHANT_ID
@@ -25,10 +26,20 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.ProtocolException
 import java.net.URL
+import android.R.attr.data
+import android.app.Activity
+import android.content.DialogInterface
+import android.os.Parcelable
+import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AlertDialog
+import android.util.Log
+import com.payumoney.core.entity.TransactionResponse
+import com.payumoney.sdkui.ui.utils.ResultModel
 
 
 class MainActivity : AppCompatActivity() {
 
+    private val TAG = MainActivity::class.java.simpleName
     private var amount : Double? = null
     private lateinit var firstName : String
     private lateinit var mobileNumber : String
@@ -51,6 +62,54 @@ class MainActivity : AppCompatActivity() {
         productName = findViewById<EditText>(R.id.product_name).text.toString()
         payUMoney.launchPayUMoney(amount!!,firstName,mobileNumber,email, productName)
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Result Code is -1 send from Payumoney activity
+        Log.d("MainActivity", "request code $requestCode resultCode $resultCode")
+
+        if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data !=
+                null) {
+//            var transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager.INTENT_EXTRA_TRANSACTION_RESPONSE);
+            var transactionResponse = data.getParcelableExtra<TransactionResponse>(PayUmoneyFlowManager.INTENT_EXTRA_TRANSACTION_RESPONSE)
+
+            var resultModel = data.getParcelableExtra<ResultModel>(PayUmoneyFlowManager.ARG_RESULT);
+
+            // Check which object is non-null
+            if (transactionResponse?.getPayuResponse() != null) {
+                if (transactionResponse.transactionStatus == TransactionResponse.TransactionStatus.SUCCESSFUL) {
+                    //Success Transaction
+                    Log.d(TAG, "Successfull transaction")
+
+                } else {
+                    //Failure Transaction
+                    Log.d(TAG, "Failed transaction")
+                }
+
+                // Response from Payumoney
+                val payuResponse = transactionResponse.getPayuResponse();
+                Log.d(TAG, "Pay u Response - $payuResponse")
+
+                // Response from SURl and FURL
+                val merchantResponse = transactionResponse.transactionDetails
+
+                Log.d(TAG, "Merchant Response - $merchantResponse")
+
+               AlertDialog.Builder(this)
+                        .setCancelable(false)
+                        .setMessage("Payu's Data : $payuResponse\n\n\n Merchant's Data: $merchantResponse")
+                        .setPositiveButton(android.R.string.ok,DialogInterface.OnClickListener { dialog, whichButton ->
+                            dialog.dismiss()
+                        })
+
+            } else if (resultModel?.error != null) {
+                Log.d(TAG, "Error response : " + resultModel.error.transactionResponse);
+            } else {
+                Log.d(TAG, "Both objects are null!");
+            }
+        }
     }
 
 }
