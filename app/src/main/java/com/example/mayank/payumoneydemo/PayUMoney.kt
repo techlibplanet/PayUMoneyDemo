@@ -3,6 +3,7 @@ package com.example.mayank.payumoneydemo
 import android.app.Activity
 import android.app.ProgressDialog
 import android.os.AsyncTask
+import android.util.Log
 import android.widget.Toast
 import com.payumoney.core.PayUmoneyConfig
 import com.payumoney.core.PayUmoneyConstants
@@ -127,12 +128,14 @@ internal class PayUMoney(private val activity: Activity) {
                 conn.doOutput = true
                 conn.outputStream.write(postParamsByte)
 
-                val responseInputStream = conn.getInputStream()
+                val responseInputStream = conn.inputStream
                 val responseStringBuffer = StringBuffer()
                 val byteContainer = ByteArray(1024)
                 var i: Int
                 i = responseInputStream.read(byteContainer)
+                Log.d("TAG", "$i")
                 while (i != -1) {
+                    Log.d("TAG", "$i")
                     responseStringBuffer.append(String(byteContainer, 0, i))
                     i = responseInputStream.read(byteContainer)
                 }
