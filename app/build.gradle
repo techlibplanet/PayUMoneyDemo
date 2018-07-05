@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     buildToolsVersion "27.0.3"
@@ -34,7 +36,46 @@ dependencies {
     implementation 'com.android.support:design:28.0.0-alpha3'
 
     // PayUMoney
-    implementation ('com.payumoney.sdkui:plug-n-play:1.4.0'){
+    implementation('com.payumoney.sdkui:plug-n-play:1.4.0') {
         exclude module: 'support-v4'
     }
+
+    //Dagger2
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation 'com.android.support:support-v4:28.0.0-alpha3'
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    //Dagger Android
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    // if you use the support libraries
+    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.jakewharton.timber:timber:4.7.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
+
+    //glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+
+    //stepper
+    implementation 'com.stepstone.stepper:material-stepper:4.3.1'
+
+    //RxJava2
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+
+    //room
+    implementation "android.arch.persistence.room:runtime:${arch_version}}"
+    kapt "android.arch.persistence.room:compiler:${arch_version}"
+    implementation "android.arch.persistence.room:rxjava2:${arch_version}"
+
+    //calligraphy
+    implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
 }

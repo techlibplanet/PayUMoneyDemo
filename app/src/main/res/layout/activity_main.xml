@@ -89,7 +89,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:hint="Enter Product Name"
-        android:text="Recharge Wallet"
+        android:text="Recharge Points"
         app:layout_constraintBottom_toTopOf="@+id/payNow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
